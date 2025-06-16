@@ -1,6 +1,11 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
+
+# Create 'data' folder in the current project directory
+output_dir = os.path.join(os.getcwd(), 'data')
+os.makedirs(output_dir, exist_ok=True)
 
 # Load the dataset from Our World in Data
 url = "https://covid.ourworldindata.org/data/owid-covid-data.csv"
@@ -27,7 +32,7 @@ plt.ylabel('Count')
 plt.legend()
 plt.tight_layout()
 plt.grid(True)
-plt.savefig('D:/Git/COVID-19-Data-Analysis/data/covid_timeseries_canada.png')
+plt.savefig(os.path.join(output_dir, 'covid_timeseries_canada.png'))
 
 # Correlation Heatmap (latest available date per country)
 latest_df = df.sort_values('date').groupby('location').tail(1)
@@ -40,8 +45,7 @@ plt.figure(figsize=(8, 6))
 sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
 plt.title('Correlation Between COVID-19 Severity and Country Features')
 plt.tight_layout()
-plt.savefig(
-    'D:/Git/COVID-19-Data-Analysis/data/covid_feature_correlation_heatmap.png')
+plt.savefig(os.path.join(output_dir, 'covid_feature_correlation_heatmap.png'))
 
 # Vaccination Speed Bar Chart
 vacc_df = df[['location', 'date', 'people_vaccinated_per_hundred']].dropna()
@@ -71,5 +75,4 @@ plt.title('Top 10 Countries: Fastest to Vaccinate 50% of Population')
 plt.ylabel('Days to Reach 50% Vaccination')
 plt.xticks(rotation=45, ha='right')
 plt.tight_layout()
-plt.savefig(
-    'D:/Git/COVID-19-Data-Analysis/data/fastest_vaccination_countries.png')
+plt.savefig(os.path.join(output_dir, 'fastest_vaccination_countries.png'))
